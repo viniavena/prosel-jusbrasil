@@ -1,23 +1,3 @@
-input_entrada = '0710802-55.2018.8.02.0001'
-
-tribunais = {
-    '02': {'uf': 'AL', 'base_url': 'https://www2.tjal.jus.br'},
-    '06': {'uf': 'CE', 'base_url': 'https://esaj.tjce.jus.br'}
-}
-
-digito_tribunal = input_entrada[18:20]
-
-tribunal = tribunais[digito_tribunal]
-
-urls_rotas = {
-    'instancia_1':'/cpopg/show.do?processo.numero=',
-    'instancia_2_1':'/cposg5/search.do?cbPesquisa=NUMPROC&dePesquisa=',
-    'instancia_2_2':'/cposg5/show.do?processo.codigo='
-    }
-    
-# -------------- scrap.py
-
-
 from bs4 import BeautifulSoup
 import requests
 
@@ -91,13 +71,14 @@ def pega_codigo_segunda_instancia(soup_pagina_segunda_instancia_1):
 
     Output:
     -------
-    retorna string contendo o codigo do processo na segunda instancia
+    retorna string contendo o código do processo na segunda instancia 
+    (caso não haja código, ou seja, não haja processo em segunda instancia retorna-se None)
 
     '''
     
     # Verifica se existe aquele processo em segunda instância
     if soup_pagina_segunda_instancia_1.find('td', id='mensagemRetorno'):
-       raise Exception("Não há código de segunda instância.")
+       return None
     
     codigo_processo = soup_pagina_segunda_instancia_1.find('input', id="processoSelecionado").get('value')
     
@@ -222,33 +203,3 @@ def pega_infos_processo(soup_pagina_processo, numero_processo, grau_instancia):
     dados_processo = DadosProcesso(numero_processo, juiz, assunto, classe, area, data_distribuicao, valor_acao, partes, movimentacoes, grau_instancia)
 
     return dados_processo
-
-def busca_primeira_instancia(numero_processo, tribunal):
-    grau_instancia = 1
-    url_busca = tribunal['base_url'] + urls_rotas['instancia_1'] + numero_processo
-    
-    soup = get_pagina_web(url_busca)
-    
-    resultado_primeira_instancia = pega_infos_processo(soup,numero_processo,grau_instancia)
-    resultados.append(resultado_primeira_instancia)
-    
-    
-def busca_segunda_instancia(numero_processo, tribunal):
-    grau_instancia = 2
-    
-    url_busca_1 = tribunal['base_url'] + urls_rotas['instancia_2_1'] + numero_processo
-    soup_1 = get_pagina_web(url_busca_1)
-
-    codigo_processo_segunda_instancia = pega_codigo_segunda_instancia(soup_1)
-    url_busca_2 = tribunal['base_url'] + urls_rotas['instancia_2_2'] + codigo_processo_segunda_instancia
-    
-    soup_2 = get_pagina_web(url_busca_2)
-
-    resultado_segunda_intancia = pega_infos_processo(soup_2,numero_processo,grau_instancia)
-    resultados.append(resultado_segunda_intancia)
-    
-
-busca_primeira_instancia(input_entrada,tribunal)
-busca_segunda_instancia(input_entrada,tribunal)
-
-print(resultados)
