@@ -28,6 +28,11 @@ async def search_lawsuit(load: LawsuitNumber):
     }
 
     digito_tribunal = load.numero_processo[18:20]
+
+    # Caso o número seja válido mas de outro tribunal
+    if digito_tribunal not in tribunais:
+        raise HTTPException(status_code=400, detail="Esse tribunal não pode ser acessado")
+
     tribunal = tribunais[digito_tribunal]
 
     # Cria as tasks para as duas buscas paralelas

@@ -106,16 +106,18 @@ def pega_partes_do_processo(soup_pagina_processo):
 
     lista_das_partes = []
 
-    partes_do_processo = soup_pagina_processo.find('table', id=['tableTodasPartes','tablePartesPrincipais']).find_all('tr', class_='fundoClaro')
-    
-    for row in partes_do_processo:
-        tipo_parte = row.find('span', class_ = 'mensagemExibindo tipoDeParticipacao').get_text().strip()
-        nome_parte = row.find('td', class_ = 'nomeParteEAdvogado').contents[0].strip()
-        advogados_rows = row.find_all(lambda tag: tag.name == 'span' and tag.text.startswith('Advogad'))
-        advogados = [tag.find_next_sibling(string=True).strip() for tag in advogados_rows]
+    partes_do_processo_table = soup_pagina_processo.find('table', id=['tableTodasPartes','tablePartesPrincipais'])
+    if partes_do_processo_table:
+        partes_do_processo = partes_do_processo_table.find_all('tr', class_='fundoClaro')
+        
+        for row in partes_do_processo:
+            tipo_parte = row.find('span', class_ = 'mensagemExibindo tipoDeParticipacao').get_text().strip()
+            nome_parte = row.find('td', class_ = 'nomeParteEAdvogado').contents[0].strip()
+            advogados_rows = row.find_all(lambda tag: tag.name == 'span' and tag.text.startswith('Advogad'))
+            advogados = [tag.find_next_sibling(string=True).strip() for tag in advogados_rows]
 
-        parte_do_processo = ParteDoProcesso(tipo_parte, nome_parte, advogados)
-        lista_das_partes.append(parte_do_processo)
+            parte_do_processo = ParteDoProcesso(tipo_parte, nome_parte, advogados)
+            lista_das_partes.append(parte_do_processo)
 
     return lista_das_partes
 
