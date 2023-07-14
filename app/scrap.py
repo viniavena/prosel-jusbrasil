@@ -103,7 +103,7 @@ def pega_partes_do_processo(soup_pagina_processo):
 
     lista_das_partes = []
 
-    partes_do_processo = soup_pagina_processo.find('table', id='tableTodasPartes').find_all('tr', class_='fundoClaro')
+    partes_do_processo = soup_pagina_processo.find('table', id=['tableTodasPartes','tablePartesPrincipais']).find_all('tr', class_='fundoClaro')
     
     for row in partes_do_processo:
         tipo_parte = row.find('span', class_ = 'mensagemExibindo tipoDeParticipacao').get_text().strip()
@@ -140,18 +140,23 @@ def pega_movimentacoes_processo(soup_pagina_processo):
     for row in rows_movimentacoes:
         data_movimentacao = row.find('td', class_= ['dataMovimentacao', 'dataMovimentacaoProcesso']).get_text().strip()
         tag_tramite = row.find('td', class_ = ['descricaoMovimentacao', 'descricaoMovimentacaoProcesso'])
-
-        tramite = descricao = ''
         
-        # Em caso de haver link para visualizar documento em inteiro teor
-        if tag_tramite.find('a',class_='linkMovVincProc'):
-            tramite = tag_tramite.find('a',class_='linkMovVincProc').text.strip()
-            descricao = tag_tramite.find('span').text.strip()
-        else: 
-            tramite = tag_tramite.text.strip()
-            descricao = tag_tramite.find('span').text.strip()
+        tramite = descricao = ""
+        
+        if tag_tramite.find('a', class_='linkMovVincProc'):
+            tramite = tag_tramite.find('a', class_='linkMovVincProc').text.strip()
+            descricao_span = tag_tramite.find('span')
+            descricao_parts = [part.strip() for part in descricao_span if not part.name] # Filtra apenas o texto dentro das tags e ignora as tags.
+            descricao = " ".join(descricao_parts)
             
-        movimentacao = MovimentacaoProcesso(data_movimentacao,tramite,descricao)
+        else:
+            tramite_parts = [part.strip() for part in tag_tramite if not part.name] 
+            tramite = " ".join(tramite_parts).strip()
+            descricao_span = tag_tramite.find('span')
+            descricao_parts = [part.strip() for part in descricao_span if not part.name]
+            descricao = " ".join(descricao_parts)
+        
+        movimentacao = MovimentacaoProcesso(data_movimentacao, tramite, descricao)
         lista_movimentacoes.append(movimentacao)
 
     return lista_movimentacoes
