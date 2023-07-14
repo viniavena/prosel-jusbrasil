@@ -128,7 +128,7 @@ def pega_partes_do_processo(soup_pagina_processo):
         tipo_parte = row.find('span', class_ = 'mensagemExibindo tipoDeParticipacao').get_text().strip()
         nome_parte = row.find('td', class_ = 'nomeParteEAdvogado').contents[0].strip()
         advogados_rows = row.find_all(lambda tag: tag.name == 'span' and tag.text.startswith('Advogad'))
-        advogados = [tag.find_next_sibling(text=True).strip() for tag in advogados_rows]
+        advogados = [tag.find_next_sibling(string=True).strip() for tag in advogados_rows]
 
         parte_do_processo = ParteDoProcesso(tipo_parte, nome_parte, advogados)
         lista_das_partes.append(parte_do_processo)
