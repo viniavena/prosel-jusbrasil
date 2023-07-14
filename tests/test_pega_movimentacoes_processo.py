@@ -45,6 +45,13 @@ class TestPegaMovimentacoesProcesso(unittest.TestCase):
         self.assertEqual(movimentacao2.data_movimentacao, "02/01/2023")
         self.assertEqual(movimentacao2.tramite, "Tramite 2")
         self.assertEqual(movimentacao2.descricao, "Descrição 2")
+        
+    def test_pega_movimentacoes_processo_sem_movimentacoes(self):
+        soup = BeautifulSoup("", 'html.parser')
+
+        movimentacoes = pega_movimentacoes_processo(soup)
+
+        self.assertEqual(len(movimentacoes), 0)
 
 if __name__ == '__main__':
     unittest.main()

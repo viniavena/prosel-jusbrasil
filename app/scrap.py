@@ -140,7 +140,14 @@ def pega_movimentacoes_processo(soup_pagina_processo):
     '''
 
     lista_movimentacoes = []
-    rows_movimentacoes = soup_pagina_processo.find('tbody', id='tabelaTodasMovimentacoes').find_all('tr')
+
+    tbody_movimentacoes = soup_pagina_processo.find('tbody', id='tabelaTodasMovimentacoes')
+    
+    if tbody_movimentacoes is None:
+        return lista_movimentacoes
+    
+    rows_movimentacoes = tbody_movimentacoes.find_all('tr')
+
 
     for row in rows_movimentacoes:
         data_movimentacao = row.find('td', class_= ['dataMovimentacao', 'dataMovimentacaoProcesso']).get_text().strip()
