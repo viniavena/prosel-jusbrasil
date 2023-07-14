@@ -33,7 +33,7 @@ def valida_numero_processo(numero_processo):
 
     return int(numero_processo[7:9]) == dv
     
-def busca_primeira_instancia(numero_processo, tribunal):
+async def busca_primeira_instancia(numero_processo, tribunal):
     '''
     Função com o pipeline de busca de um processo para a primeira instância
 
@@ -53,13 +53,15 @@ def busca_primeira_instancia(numero_processo, tribunal):
     grau_instancia = 1
     url_busca = tribunal['base_url'] + urls_rotas['instancia_1'] + numero_processo
     
+    print(url_busca)
+
     soup = get_pagina_web(url_busca)
     
     resultado_primeira_instancia = pega_infos_processo(soup,numero_processo,grau_instancia)
     return resultado_primeira_instancia
     
     
-def busca_segunda_instancia(numero_processo, tribunal):
+async def busca_segunda_instancia(numero_processo, tribunal):
     '''
     Função com o pipeline de busca de um processo para a primeira instância
 

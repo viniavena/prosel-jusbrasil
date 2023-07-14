@@ -80,6 +80,9 @@ def pega_codigo_segunda_instancia(soup_pagina_segunda_instancia_1):
     if soup_pagina_segunda_instancia_1.find('td', id='mensagemRetorno'):
        return None
     
+    if not soup_pagina_segunda_instancia_1.find('input', id="processoSelecionado"):
+        return None
+    
     codigo_processo = soup_pagina_segunda_instancia_1.find('input', id="processoSelecionado").get('value')
     
     return codigo_processo
@@ -179,32 +182,44 @@ def pega_infos_processo(soup_pagina_processo, numero_processo, grau_instancia):
     Retorna objeto da classe ParteDoProcesso
 
     '''
-
+    
     num_processo = soup_pagina_processo.find('span', id="numeroProcesso").get_text().strip()
 
-    if numero_processo != num_processo:
-        raise Exception("Número do processo não condiz com o encontrado.")       
+    juiz = soup_pagina_processo.find('span', id='juizProcesso')
+    assunto = soup_pagina_processo.find('span', id='assuntoProcesso')
+    classe = soup_pagina_processo.find('span', id='classeProcesso')
+    data_distribuicao = soup_pagina_processo.find('div', id='dataHoraDistribuicaoProcesso')
+    valor_acao = soup_pagina_processo.find('div', id='valorAcaoProcesso')
 
-    
-    if grau_instancia == 1:
-        juiz = soup_pagina_processo.find('span', id='juizProcesso').contents[0]
-        assunto = soup_pagina_processo.find('span', id='assuntoProcesso').contents[0]
-        classe = soup_pagina_processo.find('span', id='classeProcesso').contents[0]
-        data_distribuicao = soup_pagina_processo.find('div', id='dataHoraDistribuicaoProcesso').contents[0]
-        valor_acao = soup_pagina_processo.find('div', id='valorAcaoProcesso').contents[0].replace(' ','')
-
+    if juiz:
+        juiz = juiz.contents[0]
     else:
         juiz = ''
-        assunto = soup_pagina_processo.find('div', id='assuntoProcesso').find('span').text
-        classe = soup_pagina_processo.find('div', id='classeProcesso').find('span').text
-        data_distribuicao = ''
-        valor_acao = soup_pagina_processo.find('div', id='valorAcaoProcesso').find('span').text.replace(' ','')
 
+    if assunto:
+        assunto = assunto.contents[0]
+    else:
+        assunto = ''
+
+    if classe:
+        classe = classe.contents[0]
+    else:
+        classe = ''
+
+    if data_distribuicao:
+        data_distribuicao = data_distribuicao.contents[0]
+    else:
+        data_distribuicao = ''
+
+    if valor_acao:
+        valor_acao = valor_acao.contents[0].replace(' ', '')
+    else:
+        valor_acao = ''
 
     area = soup_pagina_processo.find('div', id='areaProcesso').get_text().strip()
-    partes = pega_partes_do_processo(soup_pagina_processo)  # Função para obter as partes do processo
+    partes = pega_partes_do_processo(soup_pagina_processo)
     movimentacoes = pega_movimentacoes_processo(soup_pagina_processo)
 
-    dados_processo = DadosProcesso(numero_processo, juiz, assunto, classe, area, data_distribuicao, valor_acao, partes, movimentacoes, grau_instancia)
+    dados_processo = DadosProcesso(num_processo, juiz, assunto, classe, area, data_distribuicao, valor_acao, partes, movimentacoes, grau_instancia)
 
     return dados_processo
