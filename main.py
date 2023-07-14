@@ -28,6 +28,6 @@ def search_lawsuit(load: LawsuitNumber):
     digito_tribunal = load.numero_processo[18:20]
     tribunal = tribunais[digito_tribunal]
     
-    resultados = [busca_primeira_instancia(load.numero_processo,tribunal)]
+    resultados = [busca_primeira_instancia(load.numero_processo,tribunal), busca_segunda_instancia(load.numero_processo,tribunal)]
     
     return resultados
