@@ -53,8 +53,6 @@ async def busca_primeira_instancia(numero_processo, tribunal):
     grau_instancia = 1
     url_busca = tribunal['base_url'] + urls_rotas['instancia_1'] + numero_processo
     
-    print(url_busca)
-
     soup = get_pagina_web(url_busca)
     
     resultado_primeira_instancia = pega_infos_processo(soup,numero_processo,grau_instancia)
