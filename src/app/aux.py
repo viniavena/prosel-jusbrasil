@@ -1,5 +1,5 @@
 
-from app.scrap import get_pagina_web, pega_codigo_segunda_instancia, pega_infos_processo, pega_movimentacoes_processo, pega_partes_do_processo
+from src.app.scrap import get_pagina_web, pega_codigo_segunda_instancia, pega_infos_processo
 
 
 urls_rotas = {

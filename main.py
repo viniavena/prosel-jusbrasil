@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import asyncio
 
 
-from app.aux import busca_primeira_instancia, busca_segunda_instancia, valida_numero_processo
+from src.app.aux import busca_primeira_instancia, busca_segunda_instancia, valida_numero_processo
 
 class LawsuitNumber(BaseModel):
     numero_processo: str 
