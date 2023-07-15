@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-crawler-env/
+crawler-env
 .Python
 build/
 develop-eggs/
