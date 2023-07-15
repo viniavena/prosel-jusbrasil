@@ -46,6 +46,15 @@ async def search_lawsuit(load: LawsuitNumber):
     resultado1 = task1.result()
     resultado2 = task2.result()
 
-    resultados = [resultado1, resultado2]
+    resultados = []
+
+    if resultado1:
+        resultados.append(resultado1)
+
+    if resultado2:
+        resultados.append(resultado2)
+
+    if len(resultados) == 0:
+        raise HTTPException(status_code=404, detail="Nenhum resultado encontrado")
     
     return resultados

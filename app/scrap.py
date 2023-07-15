@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
+from fastapi.exceptions import HTTPException
 import requests
 
-resultados = []
 
 # ------------
 # Classes:
@@ -191,6 +191,11 @@ def pega_infos_processo(soup_pagina_processo, numero_processo, grau_instancia):
     Retorna objeto da classe ParteDoProcesso
 
     '''
+
+    mensagem_retorno = soup_pagina_processo.find('td', id='mensagemRetorno')
+    
+    if mensagem_retorno:
+        return None
     
     num_processo = soup_pagina_processo.find('span', id="numeroProcesso").get_text().strip()
 
