@@ -73,3 +73,31 @@ def buscar_tribunal_por_id(tribunal_id):
         return tribunal
     else:
         return None
+
+
+def adiciona_tribunal(tribunal: Tribunal):
+    '''
+    Função para adicionar um tribunal à tabela de tribunais.
+
+    Parâmetros:
+    ----------
+    tribunal: objeto Tribunal contendo as informações do tribunal a ser adicionado à tabela
+
+    '''
+    
+    conn = sqlite3.connect(path_database)
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("INSERT INTO tribunais (tribunal_id, uf, base_url) VALUES (?, ?, ?)", 
+                    (tribunal.tribunal_id, 
+                    tribunal.uf, 
+                    tribunal.base_url))
+        conn.commit()
+        conn.close()
+        return True
+    
+    except sqlite3.Error as e:
+        conn.rollback()
+        conn.close()
+        return False

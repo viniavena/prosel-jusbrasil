@@ -3,12 +3,16 @@ from fastapi.exceptions import HTTPException
 from pydantic import BaseModel
 import asyncio
 
-
 from src.app.aux import busca_primeira_instancia, busca_segunda_instancia, valida_numero_processo
-from src.app.db_services import buscar_tribunal_por_id, listar_tribunais
+from src.app.db_services import buscar_tribunal_por_id, listar_tribunais, adiciona_tribunal
 
 class LawsuitNumber(BaseModel):
     numero_processo: str 
+
+class Tribunal(BaseModel):
+    tribunal_id: str
+    uf: str
+    base_url: str
 
 app = FastAPI()
 
@@ -22,11 +26,6 @@ async def search_lawsuit(load: LawsuitNumber):
 
     if not valida_numero_processo(load.numero_processo):
         raise HTTPException(status_code=400, detail="Número do processo inválido")
-
-    # tribunais = {
-    # '02': {'uf': 'AL', 'base_url': 'https://www2.tjal.jus.br'},
-    # '06': {'uf': 'CE', 'base_url': 'https://esaj.tjce.jus.br'}
-    # }
 
     digito_tribunal = load.numero_processo[18:20]
 
@@ -73,3 +72,12 @@ async def buscar_tribunal(tribunal_id: str):
     else:
         raise HTTPException(status_code=404, detail="Tribunal não encontrado")
     
+
+@app.post("/tribunais")
+async def create_tribunal(tribunal: Tribunal):
+
+    if adiciona_tribunal(tribunal):
+        return {"message": "Tribunal adicionado com sucesso"}
+    else:
+        return {"message": "Erro ao adicionar tribunal"}
+
