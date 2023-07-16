@@ -5,6 +5,7 @@ import asyncio
 
 
 from src.app.aux import busca_primeira_instancia, busca_segunda_instancia, valida_numero_processo
+from src.app.db_services import buscar_tribunal_por_id, listar_tribunais
 
 class LawsuitNumber(BaseModel):
     numero_processo: str 
@@ -22,18 +23,18 @@ async def search_lawsuit(load: LawsuitNumber):
     if not valida_numero_processo(load.numero_processo):
         raise HTTPException(status_code=400, detail="Número do processo inválido")
 
-    tribunais = {
-    '02': {'uf': 'AL', 'base_url': 'https://www2.tjal.jus.br'},
-    '06': {'uf': 'CE', 'base_url': 'https://esaj.tjce.jus.br'}
-    }
+    # tribunais = {
+    # '02': {'uf': 'AL', 'base_url': 'https://www2.tjal.jus.br'},
+    # '06': {'uf': 'CE', 'base_url': 'https://esaj.tjce.jus.br'}
+    # }
 
     digito_tribunal = load.numero_processo[18:20]
 
-    # Caso o número seja válido mas de outro tribunal
-    if digito_tribunal not in tribunais:
-        raise HTTPException(status_code=400, detail="Esse tribunal não pode ser acessado")
-
-    tribunal = tribunais[digito_tribunal]
+    objeto_tribunal = buscar_tribunal_por_id(digito_tribunal)
+    if objeto_tribunal:
+        tribunal = objeto_tribunal.__dict__
+    else:
+        raise HTTPException(status_code=404, detail="Tribunal não encontrado")
 
     # Cria as tasks para as duas buscas paralelas
     task1 = asyncio.create_task(busca_primeira_instancia(load.numero_processo, tribunal))
@@ -58,3 +59,17 @@ async def search_lawsuit(load: LawsuitNumber):
         raise HTTPException(status_code=404, detail="Nenhum resultado encontrado")
     
     return resultados
+
+@app.get("/tribunais")
+async def get_tribunais():
+    tribunais = listar_tribunais()
+    return tribunais
+
+@app.get("/tribunais/{tribunal_id}")
+async def buscar_tribunal(tribunal_id: str):
+    tribunal = buscar_tribunal_por_id(tribunal_id)
+    if tribunal:
+        return tribunal.__dict__
+    else:
+        raise HTTPException(status_code=404, detail="Tribunal não encontrado")
+    
