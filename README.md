@@ -108,16 +108,21 @@ Uma vez inicializado o servidor é possível acessar uma documentação automát
 
 A documentação a seguir descreve os endpoints disponíveis na API.
 
-**Bem-vindo:**
-**Endpoint: /**
-**Método: GET**
+#### Bem-vindo:
+
+##### Endpoint: /
+
+##### Método: GET
+
 Retorna uma mensagem de boas-vindas ao robo crawler do ESAJ Alagoas e Ceará. Use o método POST para buscar informações usando o número do processo.
 
 ---
 
-**Buscar Processo:**
-**Endpoint: /**
-**Método: POST**
+#### Buscar Processo:
+
+##### Endpoint: /
+
+##### Método: POST
 
 Descrição: Busca informações sobre um processo com base no número do processo fornecido.
 
@@ -137,16 +142,22 @@ Exemplo de requisição:
 
 ---
 
-**Listar Tribunais:**
-**Endpoint: /tribunais**
-**Método: GET**
+#### Listar Tribunais:
+
+##### Endpoint: /tribunais
+
+##### Método: GET
+
 Retorna uma lista com todos os tribunais disponíveis no crawler.
 
 ---
 
-**Buscar Tribunal por ID:**
-**Endpoint: /tribunais/{tribunal_id}**
-**Método: GET**
+#### Buscar Tribunal por ID:
+
+##### Endpoint: /tribunais/{tribunal_id}
+
+##### Método: GET
+
 Busca um tribunal pelo seu ID.
 Parâmetro:
 
@@ -154,9 +165,11 @@ Parâmetro:
 
 ---
 
-**Adicionar Tribunal:**
-**Endpoint: /tribunais**
-**Método: POST**
+#### Adicionar Tribunal:
+
+##### Endpoint: /tribunais
+
+##### Método: POST
 
 Adiciona um novo tribunal à lista de tribunais.
 Parâmetro:
@@ -178,9 +191,11 @@ Exemplo de requisição:
 
 ---
 
-**Deletar Tribunal**
-**Endpoint: /tribunais/{tribunal_id}**
-**Método: DELETE**
+#### Deletar Tribunal
+
+##### Endpoint: /tribunais/{tribunal_id}
+
+##### Método: DELETE
 
 Deleta um tribunal da lista de tribunais.
 Parâmetro:
