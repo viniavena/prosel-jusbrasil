@@ -32,6 +32,9 @@ Desenvolvimento de uma API Crawler que busca dados de um processo em todos os gr
   - Asyncio: Utilizada para executar tarefas assíncronas de forma paralela.
   - Unittest: Utilizada para escrever testes unitários e comparar com resultados esperados.
 
+**Disclaimer:**
+Este projeto utiliza o banco de dados localmente, o que não é considerado uma boa prática em ambientes de produção. Essa abordagem foi adotada apenas para fins de apresentação do desafio técnico.
+
 ## Instalação
 
 Este documento fornece instruções para a instalação da API. Siga as etapas abaixo para configurar o ambiente e executar a API em seu sistema.
@@ -99,6 +102,87 @@ A API está pronta para uso. Você pode enviar solicitações para a API usando 
 
 Consulte a seguinte documentação da API para obter mais detalhes sobre os endpoints disponíveis e os formatos das solicitações e respostas.
 
-### Documentação rotas API
+### Documentação endpoints API
 
 Uma vez inicializado o servidor é possível acessar uma documentação automática e interativa por meio de: http://127.0.0.1:8000/redoc
+
+A documentação a seguir descreve os endpoints disponíveis na API.
+
+**Bem-vindo:**
+**Endpoint: /**
+**Método: GET**
+Retorna uma mensagem de boas-vindas ao robo crawler do ESAJ Alagoas e Ceará. Use o método POST para buscar informações usando o número do processo.
+
+---
+
+**Buscar Processo:**
+**Endpoint: /**
+**Método: POST**
+
+Descrição: Busca informações sobre um processo com base no número do processo fornecido.
+
+Parâmetro:
+
+- numero_processo (string): O número do processo a ser pesquisado.
+
+O número do processo deve seguir o padrão CNJ de numeração de processos jurídicos: NNNNNNN-DD.AAAA.JTR.OOOO
+
+Exemplo de requisição:
+
+```json
+{
+  "numero_processo": "0705244-63.2022.8.02.0001"
+}
+```
+
+---
+
+**Listar Tribunais:**
+**Endpoint: /tribunais**
+**Método: GET**
+Retorna uma lista com todos os tribunais disponíveis no crawler.
+
+---
+
+**Buscar Tribunal por ID:**
+**Endpoint: /tribunais/{tribunal_id}**
+**Método: GET**
+Busca um tribunal pelo seu ID.
+Parâmetro:
+
+- tribunal_id (string): O ID do tribunal a ser buscado.
+
+---
+
+**Adicionar Tribunal:**
+**Endpoint: /tribunais**
+**Método: POST**
+
+Adiciona um novo tribunal à lista de tribunais.
+Parâmetro:
+
+- objeto da classe Tribunal:
+  - tribunal_id (string): O ID do tribunal a ser adicionado.
+  - uf (string): sigla UF do estado em questão
+  - base_url (string): radical da url do esaj correspondete ao tribunal
+
+Exemplo de requisição:
+
+```json
+{
+  "tribunal_id": "06",
+  "uf": "CE",
+  "base_url": "https://esaj.tjce.jus.br"
+}
+```
+
+---
+
+**Deletar Tribunal**
+**Endpoint: /tribunais/{tribunal_id}**
+**Método: DELETE**
+
+Deleta um tribunal da lista de tribunais.
+Parâmetro:
+
+- tribunal_id (string): O ID do tribunal a ser deletado.
