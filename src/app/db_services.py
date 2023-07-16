@@ -42,3 +42,32 @@ def listar_tribunais():
     conn.close()
     
     return tribunais
+
+
+def buscar_tribunal_por_id(tribunal_id):
+    '''
+    Função para buscar um tribunal pelo seu ID.
+
+    Parâmetros:
+    ----------
+    tribunal_id: str
+        ID do tribunal a ser buscado.
+
+    Output:
+    ------
+    tribunal: objeto Tribunal contendo as informações do tribunal encontrado, ou None se não encontrado.
+    '''
+
+    conn = sqlite3.connect(path_database)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM tribunais WHERE tribunal_id = ?", (tribunal_id,))
+    resultado = cursor.fetchone()
+
+    conn.close()
+
+    if resultado:
+        tribunal = Tribunal(resultado[0], resultado[1], resultado[2])
+        return tribunal
+    else:
+        return None
