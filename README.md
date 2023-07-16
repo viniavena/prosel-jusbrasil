@@ -8,7 +8,7 @@ Desenvolvimento de uma API Crawler que busca dados de um processo em todos os gr
 
 - Criar uma API para receber um JSON contendo o número do processo
 - Buscar dados de um processo em todos os graus
-- Retornando um JSON com os dados dos processos encontrados em todas as esferas
+- Retornar um JSON com os dados dos processos encontrados em todas as esferas
 
 ## Features
 
@@ -17,12 +17,15 @@ Desenvolvimento de uma API Crawler que busca dados de um processo em todos os gr
 - Busca e extração dos dados do processo em primeira e segunda instância
 - Busca de forma paralela entre as diferentes esferas (concorrência)
 - Testes unitários
+- Banco de dados com tribunais
+- Escalabilidade: possibilidade de adicionar novos tribunais ao crawler
 - Versionamento de código
 
 ## Stack usada
 
 - Linguagem de programação: Python
 - Framework FastAPI para criar a API web
+- Banco de dados em SQLite3
 - Algumas das bibliotecas usadas:
   - BeautifulSoup: Utilizada para fazer o parsing e extrair informações de páginas HTML.
   - Requests: Utilizada para fazer as requisições HTTP
@@ -37,7 +40,7 @@ Este documento fornece instruções para a instalação da API. Siga as etapas a
 
 Certifique-se de que seu sistema atenda aos seguintes requisitos:
 
-- Python 3.7 ou superior instalado
+- Python 3.9 ou superior instalado
 - Acesso à internet para instalar dependências e rodar o crawler
 
 ### Clonando o Repositório
@@ -87,11 +90,15 @@ uvicorn main:app --reload
 ```
 
 Aguarde a mensagem "Uvicorn running on..." no terminal, indicando que o servidor está em execução.
+
 A API agora está rodando em http://localhost:8000 ou em outro endereço e porta especificados pelo Uvicorn.
 
 ### Testando a API
 
-A API está pronta para uso. Você pode enviar solicitações para a API usando ferramentas como o cURL, Postman ou qualquer biblioteca HTTP de sua preferência.
+A API está pronta para uso. Você pode enviar solicitações para a API usando ferramentas como o cURL, Insomnia, Postman ou qualquer biblioteca HTTP de sua preferência.
+
 Consulte a seguinte documentação da API para obter mais detalhes sobre os endpoints disponíveis e os formatos das solicitações e respostas.
 
 ### Documentação rotas API
+
+Uma vez inicializado o servidor é possível acessar uma documentação automática e interativa por meio de: http://127.0.0.1:8000/redoc
