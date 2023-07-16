@@ -48,8 +48,8 @@ def buscar_tribunal_por_id(tribunal_id):
     '''
     Função para buscar um tribunal pelo seu ID.
 
-    Parâmetros:
-    ----------
+    Input:
+    ------
     tribunal_id: str
         ID do tribunal a ser buscado.
 
@@ -79,9 +79,13 @@ def adiciona_tribunal(tribunal: Tribunal):
     '''
     Função para adicionar um tribunal à tabela de tribunais.
 
-    Parâmetros:
-    ----------
+    Input:
+    ------
     tribunal: objeto Tribunal contendo as informações do tribunal a ser adicionado à tabela
+
+    Output:
+    ------
+    bool: True se o tribunal foi adicionado com sucesso, False caso contrário.
 
     '''
     
@@ -101,3 +105,41 @@ def adiciona_tribunal(tribunal: Tribunal):
         conn.rollback()
         conn.close()
         return False
+
+
+def apaga_tribunal(tribunal_id):
+    """
+    Função para deletar um tribunal da tabela com base no tribunal_id.
+
+    Input:
+    ------
+    tribunal_id: str
+        ID do tribunal a ser deletado.
+
+    Output:
+    -------
+    bool:
+        True se o tribunal foi deletado com sucesso, False caso contrário.
+    """
+    conn = sqlite3.connect(path_database)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM tribunais WHERE tribunal_id = ?", (tribunal_id,))
+    resultado = cursor.fetchone()
+
+    if resultado is None:
+        # Tribunal não encontrado na tabela
+        conn.close()
+        return False
+
+    try:
+        cursor.execute("DELETE FROM tribunais WHERE tribunal_id = ?", (tribunal_id,))
+        conn.commit()
+        conn.close()
+        return True
+    
+    except sqlite3.Error as e:
+        conn.rollback()
+        conn.close()
+        return False
+    

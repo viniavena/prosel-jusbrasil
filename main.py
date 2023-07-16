@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import asyncio
 
 from src.app.aux import busca_primeira_instancia, busca_segunda_instancia, valida_numero_processo
-from src.app.db_services import buscar_tribunal_por_id, listar_tribunais, adiciona_tribunal
+from src.app.db_services import apaga_tribunal, buscar_tribunal_por_id, listar_tribunais, adiciona_tribunal
 
 class LawsuitNumber(BaseModel):
     numero_processo: str 
@@ -81,3 +81,10 @@ async def create_tribunal(tribunal: Tribunal):
     else:
         return {"message": "Erro ao adicionar tribunal"}
 
+
+@app.delete("/tribunais/{tribunal_id}")
+async def deleta_tribunal(tribunal_id: str):
+    if apaga_tribunal(tribunal_id):
+        return {"message": "Tribunal deletado com sucesso"}
+    else:
+        return {"message": "Tribunal não encontrado"}
