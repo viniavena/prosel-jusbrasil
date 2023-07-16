@@ -67,7 +67,9 @@ def buscar_tribunal_por_id(tribunal_id):
     conn.close()
 
     if resultado:
-        tribunal = Tribunal(resultado[0], resultado[1], resultado[2])
+        tribunal = Tribunal(tribunal_id=resultado[0], 
+                            uf=resultado[1], 
+                            base_url=resultado[2])
         return tribunal
     else:
         return None
