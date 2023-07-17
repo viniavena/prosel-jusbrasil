@@ -102,6 +102,14 @@ A API está pronta para uso. Você pode enviar solicitações para a API usando 
 
 Consulte a seguinte documentação da API para obter mais detalhes sobre os endpoints disponíveis e os formatos das solicitações e respostas.
 
+### Demo
+
+Uma demonstração da API está disponível [aqui](https://proseljusbrasil-1-w8214358.deta.app/).
+
+Você também pode acessar uma documentação interativa da API [aqui](https://proseljusbrasil-1-w8214358.deta.app/redoc).
+
+**Disclaimer:** Na versão publicada na demo, não é utilizado multithreading entre as diferentes esferas e não é possível adicionar ou deletar tribunais da tabela.
+
 ### Documentação endpoints API
 
 Uma vez inicializado o servidor é possível acessar uma documentação automática e interativa por meio de: http://127.0.0.1:8000/redoc
