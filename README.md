@@ -25,7 +25,7 @@ Desenvolvimento de uma API Crawler que busca dados de um processo em todos os gr
 
 - Linguagem de programação: Python
 - Framework FastAPI para criar a API web
-- Banco de dados em SQLite3
+- Banco de dados em SQLite3 para armazenar os tribunais
 - Algumas das bibliotecas usadas:
   - BeautifulSoup: Utilizada para fazer o parsing e extrair informações de páginas HTML.
   - Requests: Utilizada para fazer as requisições HTTP
@@ -34,6 +34,19 @@ Desenvolvimento de uma API Crawler que busca dados de um processo em todos os gr
 
 **Disclaimer:**
 Este projeto utiliza o banco de dados localmente, o que não é considerado uma boa prática em ambientes de produção. Essa abordagem foi adotada apenas para fins de apresentação do desafio técnico.
+
+## Possíveis Recursos Adicionais
+
+Nesta seção, apresento algumas funcionalidades adicionais que poderiam ser implementadas no futuro, visando melhorar o acesso às informações jurídicas:
+
+- Adição de novos tribunais do ESAJ (rotas de adição já estão implementadas) e tratamento de possíveis divergências entre diferentes tribunais.
+
+- Busca por documento da parte:
+
+  - Dessa forma seria possível encontrar um processo e todas as informações referentes a esse, sem precisar do número do processo em si.
+  - Para isso deveria ser implementada uma busca pelo documento + raspagem dos códigos dos processos listados + busca pelo código do processo (que já está implementada).
+
+- Armazenamento das movimentações e desenvolvimento de um sistema de jurimetria com uma rotina de cronjobs, notificando alguma parte interessada sobre as novas movimentações do processo.
 
 ## Instalação
 
@@ -102,7 +115,7 @@ A API está pronta para uso. Você pode enviar solicitações para a API usando 
 
 Consulte a seguinte documentação da API para obter mais detalhes sobre os endpoints disponíveis e os formatos das solicitações e respostas.
 
-### Demo
+## Demo
 
 Uma demonstração da API está disponível [aqui](https://proseljusbrasil-1-w8214358.deta.app/).
 
@@ -110,7 +123,7 @@ Você também pode acessar uma documentação interativa da API [aqui](https://p
 
 **Disclaimer:** Na versão publicada na demo, não é utilizado multithreading entre as diferentes esferas e não é possível adicionar ou deletar tribunais da tabela.
 
-### Documentação endpoints API
+## Documentação endpoints API
 
 Uma vez inicializado o servidor é possível acessar uma documentação automática e interativa por meio de: http://127.0.0.1:8000/redoc
 

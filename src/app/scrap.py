@@ -226,7 +226,7 @@ def pega_infos_processo(soup_pagina_processo, numero_processo, grau_instancia):
         data_distribuicao = ''
 
     if valor_acao:
-        valor_acao = valor_acao.contents[0].replace(' ', '')
+        valor_acao = valor_acao.get_text().replace(' ', '')
     else:
         valor_acao = ''
 
